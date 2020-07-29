@@ -1,0 +1,7 @@
+include ':cloudInfiniteLoader'
+include ':cloudInfinite'
+include ':foundation'
+
+project(':foundation').projectDir = new File(rootDir, './QCloudFoundation/foundation')
+
+rootProject.name = "QCloudInfinite"
