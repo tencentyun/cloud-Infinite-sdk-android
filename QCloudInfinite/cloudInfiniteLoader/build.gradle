@@ -46,10 +46,17 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation project(':cloudInfinite')
+    api project(':cloudInfinite')
     api project(':foundation')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 }
+
+// 发布到 bintray
+project.extensions.add('artifactId', 'cloud-infinite-loader')
+project.extensions.add('artifactDesc', 'the tencent cloud infinite loader android sdk')
+
+// 添加发布脚本
+apply from: '../../publish.gradle'

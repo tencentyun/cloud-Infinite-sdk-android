@@ -25,6 +25,8 @@ package com.tencent.qcloud.infinite.utils;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,7 @@ public class UrlUtil {
     /**
      * 给某个URL 拼接参数
      */
-    public static String attachGetParams(String url, String key, String value) {
+    public static String attachGetParams(@NonNull String url, @NonNull String key, @NonNull String value) {
         if (TextUtils.isEmpty(url)) {
             return url;
         }
