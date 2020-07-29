@@ -155,4 +155,27 @@ public class TpgImageLoader {
         }
     }
 
+    /**
+     * 使用字节数组解码得到bitmap<br>
+     * 支持tpg和其他普通普通
+     *
+     * @param bytes 图片的字节数组
+     * @return 结果bitmap
+     */
+    public static Bitmap decode(byte[] bytes) {
+        return decode(bytes, -1);
+    }
+
+    /**
+     * 使用字节数组解码得到bitmap<br>
+     * 支持tpg和其他普通普通
+     *
+     * @param bytes    图片的字节数组
+     * @param dstWidth tpg解码目标宽度（仅支持等比缩放）
+     * @return 结果bitmap
+     */
+    public static Bitmap decode(byte[] bytes, int dstWidth) {
+        return TPGDecoderUtil.decode(bytes, dstWidth);
+    }
+
 }

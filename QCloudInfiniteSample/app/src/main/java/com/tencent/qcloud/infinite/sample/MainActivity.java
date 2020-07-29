@@ -93,14 +93,14 @@ public class MainActivity extends AppCompatActivity {
         //填充测试数据
         ArrayList<ImageBean> list = new ArrayList<>(8);
         try {
-            list.add(new ImageBean(new URL("https://cidemo-1251668577.cos.ap-guangzhou.myqcloud.com/images/01.jpg"), "JPG"));
-            list.add(new ImageBean(new URL("https://cidemo-1251668577.cos.ap-guangzhou.myqcloud.com/images/02.jpg"), "JPG"));
-            list.add(new ImageBean(new URL("https://cidemo-1251668577.cos.ap-guangzhou.myqcloud.com/images/03.jpg"), "JPG"));
-            list.add(new ImageBean(new URL("https://cidemo-1251668577.cos.ap-guangzhou.myqcloud.com/images/04.jpg"), "JPG"));
-            list.add(new ImageBean(new URL("https://cidemo-1251668577.cos.ap-guangzhou.myqcloud.com/images/05.png"), "PNG"));
-            list.add(new ImageBean(new URL("https://cidemo-1251668577.cos.ap-guangzhou.myqcloud.com/images/06.png"), "PNG"));
-            list.add(new ImageBean(new URL("https://cidemo-1251668577.cos.ap-guangzhou.myqcloud.com/images/07.png"), "PNG"));
-            list.add(new ImageBean(new URL("https://cidemo-1251668577.cos.ap-guangzhou.myqcloud.com/images/08.png"), "PNG"));
+            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/01.jpg"), "JPG"));
+            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/02.jpg"), "JPG"));
+            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/03.jpg"), "JPG"));
+            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/04.jpg"), "JPG"));
+            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/05.png"), "PNG"));
+            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/06.png"), "PNG"));
+            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/07.png"), "PNG"));
+            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/08.png"), "PNG"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         //创建数据万象操作器
         CloudInfinite cloudInfinite = new CloudInfinite();
         //根据原始URL和要进行的操作CITransformation，生成图片加载请求CIImageLoadRequest
-        cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeUrlFooter), new CloudInfiniteCallback() {
+        cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), new CloudInfiniteCallback() {
             @Override
             public void onImageLoadRequest(@NonNull final CIImageLoadRequest request) {
                 //为了展示原始的加载速度，不适用缓存

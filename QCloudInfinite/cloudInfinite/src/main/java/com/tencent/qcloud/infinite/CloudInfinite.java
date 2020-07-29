@@ -23,6 +23,7 @@
 package com.tencent.qcloud.infinite;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -89,7 +90,9 @@ public class CloudInfinite {
         String urlStr = url.toString();
         int imageMogr2Index = urlStr.indexOf("imageMogr2");
         if (imageMogr2Index == -1) {
-            urlStr = UrlUtil.attachGetParams(urlStr, "imageMogr2" + formatParam + zoomParam);
+            if(!TextUtils.isEmpty(formatParam) || !TextUtils.isEmpty(zoomParam)) {
+                urlStr = UrlUtil.attachGetParams(urlStr, "imageMogr2" + formatParam + zoomParam);
+            }
         } else {
             StringBuilder urlBuilder = new StringBuilder(urlStr);
             urlBuilder.insert(imageMogr2Index+10, formatParam + zoomParam);
