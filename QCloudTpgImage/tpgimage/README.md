@@ -1,7 +1,7 @@
 # tpgimage
 **TPG图片封装，方便用户直接使用TPG图片**
 ~~~
- implementation 'com.tencent.qcloud::tpg:1.0.0'			             	              
+ implementation 'com.tencent.qcloud::tpg:1.0.1'			             	              
 ~~~
 使用tpg时，安装时会自动包含SO库，建议在Module的build.gradle文件中使用NDK的“abiFilter”配置，设置支持的SO库架构
 ~~~

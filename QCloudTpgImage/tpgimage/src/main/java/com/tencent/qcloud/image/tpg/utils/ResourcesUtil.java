@@ -38,6 +38,9 @@ public class ResourcesUtil {
 
     /**
      * 从URI读取文件
+     * @param fileUri 文件uri
+     * @return 读取结果字节数据
+     * @throws IOException IO异常
      */
     public static byte[] readFile(URI fileUri) throws IOException {
         File f = new File(fileUri);
@@ -51,6 +54,10 @@ public class ResourcesUtil {
 
     /**
      * 读取assets文件
+     * @param context 上下文
+     * @param fileName assets文件名
+     * @return 读取结果字节数据
+     * @throws IOException IO异常
      */
     public static byte[] readFileFromAssets(Context context, String fileName) throws IOException {
         InputStream inputStream = context.getResources().getAssets().open(fileName);
@@ -66,6 +73,10 @@ public class ResourcesUtil {
 
     /**
      * 读取Resource文件
+     * @param context 上下文
+     * @param resourceId 资源id
+     * @return 读取结果字节数据
+     * @throws IOException IO异常
      */
     public static byte[] readFileFromResource(Context context, int resourceId) throws IOException {
         InputStream inputStream = context.getResources().openRawResource(resourceId);

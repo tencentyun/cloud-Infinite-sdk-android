@@ -45,7 +45,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    compileOnly 'androidx.appcompat:appcompat:1.0.0'
     api project(':cloudInfinite')
     api project(':foundation')
     testImplementation 'junit:junit:4.12'

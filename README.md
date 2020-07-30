@@ -18,7 +18,7 @@
 推荐使用Gradle进行安装
 ~~~
  implementation 'com.tencent.qcloud:cloud-infinite:1.0.0'			
- implementation 'com.tencent.qcloud:tpg:1.0.0'			             	              
+ implementation 'com.tencent.qcloud:tpg:1.0.1'			             	              
 ~~~
 
 使用tpg或tpg\-glide时，安装时会自动包含SO库，建议在Module的build.gradle文件中使用NDK的“abiFilter”配置，设置支持的SO库架构

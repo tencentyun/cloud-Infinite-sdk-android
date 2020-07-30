@@ -26,7 +26,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import static com.tencent.tpg.TPGDecoder.FORMAT_RGBA;
+import static com.tencent.tpg.Utils.FORMAT_RGBA;
 
 /**
  * TPG解码工具类
