@@ -31,6 +31,23 @@ defaultConfig {
 ~~~
 
 # 使用场景
+## 0. 怎样使用？
+1. 根据自己对图片的操作需求创建CITransformation对象，此对象保存用户对图片的操作需求
+    ~~~
+    //设置图片格式
+    CITransformation.format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader)
+    
+    //CIImageLoadOptions可以指定请求参数类型：
+    //LoadTypeAcceptHeader（默认）：将参数作为HTTP Header，适用于云闪图片分发通过CDN访问的情况
+    //LoadTypeUrlFooter：将参数作为URL Query，比较适合源站图片访问
+    ~~~
+2. 创建一个CloudInfinite对象，该对象对外提供数据万象能力
+    ~~~
+    //requestWithBaseUrl根据原始URL和CITransformation生成图片加载请求CIImageLoadRequest
+    cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), new CloudInfiniteCallback())
+    ~~~
+3. 根据生成的图片加载请求CIImageLoadRequest，使用glide或自定义loader进行图片加载
+
 ## 1. 加载数据万象的 TPG 图片
 ### 使用 Glide 加载
 
@@ -63,7 +80,7 @@ public class MyAppGlideModule extends AppGlideModule {
 //创建数据万象操作器
 CloudInfinite cloudInfinite = new CloudInfinite();
 //根据原始URL和要进行的操作CITransformation，生成图片加载请求CIImageLoadRequest
-cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), neCloudInfiniteCallback() {
+cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), new CloudInfiniteCallback() {
     @Override
     public void onImageLoadRequest(@NonNull CIImageLoadRequest request) {
         //使用glide加载CIImageLoadRequest
@@ -77,7 +94,7 @@ cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImag
 //创建数据万象操作器
 CloudInfinite cloudInfinite = new CloudInfinite();
 //根据原始URL和要进行的操作CITransformation，生成图片加载请求CIImageLoadRequest
-cloudInfinite.requestWithBaseUrl(url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), neCloudInfiniteCallback() {
+cloudInfinite.requestWithBaseUrl(url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), new CloudInfiniteCallback() {
     @Override
     public void onImageLoadRequest(@NonNull CIImageLoadRequest request) {
         //使用自定义图片加载库或者第三方图片库等对CIImageLoadRequest进行加载并解码显示
@@ -112,7 +129,7 @@ implementation 'com.tencent.qcloud:cloud-infinite-loader:1.0.0'
 //创建数据万象操作器
 CloudInfinite cloudInfinite = new CloudInfinite();
 //根据原始URL和要进行的操作CITransformation，生成图片加载请求CIImageLoadRequest
-cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), neCloudInfiniteCallback() {
+cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), new CloudInfiniteCallback() {
     @Override
     public void onImageLoadRequest(@NonNull CIImageLoadRequest request) {
         //使用CIImageLoader加载TPG图片
@@ -153,6 +170,10 @@ TpgImageLoader.displayWithFileUri(imageview, fileUri);
 #### Version 1.0.0
 ##### 2020-07-29
 首次发布<br/>TPG图片加载功能
+
+#### Version 1.0.1
+##### 2020-07-30
+TPG解码支持armeabi-v7a、arm64-v8a、x86、x86_64
 
 # 感谢
 使用过程中如果您遇到了问题或者有更好的建议欢迎提 issue以及pull request

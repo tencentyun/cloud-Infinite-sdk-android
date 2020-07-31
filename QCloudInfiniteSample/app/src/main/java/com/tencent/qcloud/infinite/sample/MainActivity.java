@@ -52,6 +52,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //获取原始文件大小
-                final int originalSize = getFileSzie(image.url);
+                final int originalSize = getFileSzie(image.url, null);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -195,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //获取TPG文件大小
-                        final int tpgSize = getFileSzie(request.getUrl());
+                        final int tpgSize = getFileSzie(request.getUrl(), request.getHeaders());
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -213,10 +215,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 获取远程文件大小
      */
-    private int getFileSzie(URL url) {
+    private int getFileSzie(URL url, Map<String, List<String>> header) {
         int originalSize = 0;
         try {
             URLConnection connection = url.openConnection();
+            if (header != null && header.size() > 0) {
+                for (String key : header.keySet())
+                    connection.addRequestProperty(key, header.get(key).get(0));
+            }
             originalSize = connection.getContentLength();
         } catch (IOException e) {
             e.printStackTrace();
