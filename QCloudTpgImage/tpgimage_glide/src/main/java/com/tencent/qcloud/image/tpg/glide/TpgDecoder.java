@@ -32,13 +32,16 @@ import com.bumptech.glide.load.ResourceDecoder;
 import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapResource;
+import com.tencent.tpg.TPGDecoder;
 import com.tencent.tpg.TPGDecoderUtil;
+import com.tencent.tpg.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * TPG图片解码器
+ * TPG图片解码器<br>
+ * 如果需要支持动图GIF，则需要注册{@link ByteBufferTpgGifDecoder}，否则动图将展示为首帧静态图
  */
 public class TpgDecoder implements ResourceDecoder<InputStream, Bitmap> {
     private final BitmapPool bitmapPool;
@@ -49,10 +52,14 @@ public class TpgDecoder implements ResourceDecoder<InputStream, Bitmap> {
 
     @Override
     public boolean handles(@NonNull InputStream source, @NonNull Options options) throws IOException {
-        //判断是否是tpg图片
-        byte[] b3 = new byte[3];
-        source.read(b3);
-        return TPGDecoderUtil.isTPGType(b3);
+        int lenght = source.available();
+        byte[] buffer = new byte[lenght];
+        source.read(buffer);
+
+        //是否是tpg
+        TPGDecoder pTPG = new TPGDecoder();
+        int status = pTPG.parseHeader(buffer);
+        return Utils.TPG_STATUS_OK == status;
     }
 
     @Nullable

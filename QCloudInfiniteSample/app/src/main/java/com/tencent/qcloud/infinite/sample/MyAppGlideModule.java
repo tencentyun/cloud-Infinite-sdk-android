@@ -30,16 +30,19 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.module.AppGlideModule;
+import com.tencent.qcloud.image.tpg.glide.ByteBufferTpgGifDecoder;
 import com.tencent.qcloud.image.tpg.glide.CIImageRequestModelLoader;
 import com.tencent.qcloud.image.tpg.glide.TpgDecoder;
 import com.tencent.qcloud.infinite.CIImageLoadRequest;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 /**
  * 注册自定义GlideModule<br>
- * 开发者应该创建此类注册CIImageRequestModelLoader和TpgDecoder<br>
+ * 开发者应该创建此类注册CIImageRequestModelLoader和TpgDecoder、ByteBufferTpgGifDecoder<br>
  * 类库开发者可以继承LibraryGlideModule创建类似的注册类
  */
 @GlideModule
@@ -48,7 +51,13 @@ public class MyAppGlideModule extends AppGlideModule {
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, Registry registry) {
         //注册支持CIImageLoadRequest的loader
         registry.prepend(CIImageLoadRequest.class, InputStream.class, new CIImageRequestModelLoader.Factory());
-        //注册TPG图片解码器
+
+        /*------------------解码器 开始-------------------------*/
+        /*如果云端图片已经是TPG格式，不需要进行原图到tpg的转换，则只需要注册解码器即可，不需要注册loader*/
+        //注册TPG静态图片解码器
         registry.prepend(InputStream.class, Bitmap.class, new TpgDecoder(glide.getBitmapPool()));
+        //注册TPG动图解码器
+        registry.prepend(ByteBuffer.class, GifDrawable.class, new ByteBufferTpgGifDecoder(context, glide.getBitmapPool()));
+        /*------------------解码器 结束-------------------------*/
     }
 }

@@ -53,14 +53,14 @@ defaultConfig {
 
 1. 安装tpg-glide sdk
 ~~~
-implementation 'com.tencent.qcloud:tpg-glide:1.0.0'
+implementation 'com.tencent.qcloud:tpg-glide:1.1.0'
 ~~~
 
-2. 创建AppGlideModule，注册CIImageRequestModelLoader和TpgDecoder
+2. 创建AppGlideModule，注册CIImageRequestModelLoader和TpgDecoder、ByteBufferTpgGifDecoder
 ~~~
 /**
  * 注册自定义GlideModule<br>
- * 开发者应该创建此类注册CIImageRequestModelLoader和TpgDecoder<br>
+ * 开发者应该创建此类注册CIImageRequestModelLoader和TpgDecoder、ByteBufferTpgGifDecoder<br>
  * 类库开发者可以继承LibraryGlideModule创建类似的注册类
  */
 @GlideModule
@@ -69,8 +69,14 @@ public class MyAppGlideModule extends AppGlideModule {
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, Registry registry) {
         //注册支持CIImageLoadRequest的loader
         registry.prepend(CIImageLoadRequest.class, InputStream.class, new CIImageRequestModelLoader.Factory());
-        //注册TPG图片解码器
+
+        /*------------------解码器 开始-------------------------*/
+        /*如果云端图片已经是TPG格式，不需要进行原图到tpg的转换，则只需要注册解码器即可，不需要注册loader*/
+        //注册TPG静态图片解码器
         registry.prepend(InputStream.class, Bitmap.class, new TpgDecoder(glide.getBitmapPool()));
+        //注册TPG动图解码器
+        registry.prepend(ByteBuffer.class, GifDrawable.class, new ByteBufferTpgGifDecoder(context, glide.getBitmapPool()));
+        /*------------------解码器 结束-------------------------*/
     }
 }
 ~~~
@@ -171,9 +177,13 @@ TpgImageLoader.displayWithFileUri(imageview, fileUri);
 ##### 2020-07-29
 首次发布<br/>TPG图片加载功能
 
-#### Version 1.0.1
+#### tpg Version 1.0.1
 ##### 2020-07-30
 TPG解码支持armeabi-v7a、arm64-v8a、x86、x86_64
+
+#### tpg-glide Version 1.1.0
+##### 2020-08-05
+Glide支持GIF动图格式TPG
 
 # 感谢
 使用过程中如果您遇到了问题或者有更好的建议欢迎提 issue以及pull request

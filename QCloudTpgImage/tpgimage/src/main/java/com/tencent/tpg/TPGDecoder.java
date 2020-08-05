@@ -5,6 +5,11 @@ import android.util.Log;
 
 import static com.tencent.tpg.Utils.TPG_STATUS_OK;
 
+/**
+ * TPG解码器<br>
+ * XXX方法使用byte[]作为数据源<br>
+ * XXX2方法使用文件路径作为数据源
+ */
 public class TPGDecoder {
 	public static final String TAG = "TPGDemo";
 	public class TPGFeature {

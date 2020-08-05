@@ -64,7 +64,7 @@ dependencies {
     implementation 'com.tencent.qcloud:cloud-infinite:1.0.0'
     implementation 'com.tencent.qcloud:cloud-infinite-loader:1.0.0'
     implementation 'com.tencent.qcloud:tpg:1.0.1'
-    implementation 'com.tencent.qcloud:tpg-glide:1.0.0'
+    implementation 'com.tencent.qcloud:tpg-glide:1.1.0'
 
 //    implementation project(':cloudInfinite')
 //    implementation project(':cloudInfiniteLoader')
