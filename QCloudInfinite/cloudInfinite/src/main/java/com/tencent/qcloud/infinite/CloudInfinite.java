@@ -27,14 +27,18 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.tencent.qcloud.infinite.utils.UrlUtil;
+import com.tencent.qcloud.infinite.enumm.CIImageLoadOptions;
+import com.tencent.qcloud.infinite.transform.CITransform;
+import com.tencent.qcloud.infinite.transform.FormatTransform;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
  * 数据万象<br>
- * 用于对外提供数据万象服务
+ * 数据万象（Cloud Infinite，CI）是腾讯云为客户提供的专业一体化的图片解决方案，涵盖图片上传、下载、存储、处理、识别等功能，将 QQ 空间相册积累的十年图片服务运作经验开放给开发者。
+ * 目前数据万象提供图片缩放、裁剪、水印、转码、内容审核等多种功能，提供高效准确的图像识别及处理服务，减少人力投入，真正地实现人工智能。
+ * 详细介绍：<a href="https://cloud.tencent.com/document/product/460">https://cloud.tencent.com/document/product/460.</a>
  */
 public class CloudInfinite {
 
@@ -60,42 +64,37 @@ public class CloudInfinite {
     public CIImageLoadRequest requestWithBaseUrlSync(@NonNull URL url, @NonNull CITransformation transformation) {
         CIImageLoadRequest imageLoadRequest = new CIImageLoadRequest(url);
 
-        //格式转换
-        String formatParam = "";
-        if (transformation.getFormat() != CIImageFormat.Default) {
-            if (transformation.getOptions() == CIImageLoadOptions.LoadTypeAcceptHeader) {
-                imageLoadRequest.addHeader("Accept", "image/" + transformation.getFormat().getFormat());
-            } else if (transformation.getOptions() == CIImageLoadOptions.LoadTypeUrlFooter) {
-                formatParam = "/format/" + transformation.getFormat().getFormat();
-            }
+        if (transformation.getTransforms() == null || transformation.getTransforms().size() == 0) {
+            return imageLoadRequest;
         }
 
-        //缩放
-        String zoomParam = "";
-        if (transformation.getZoomType() == CIImageZoomType.WithWidth) {
-            if (transformation.getWidth() != 0) {
-                zoomParam = "/thumbnail/" + transformation.getWidth() + "x";
+        StringBuilder param = new StringBuilder();
+        //对单独格式转换操作进行特殊处理
+        if (transformation.getTransforms().size() == 1 && transformation.getTransforms().get(0) instanceof FormatTransform
+                && ((FormatTransform) (transformation.getTransforms().get(0))).getFormatOptions() == CIImageLoadOptions.LoadTypeAcceptHeader) {
+            imageLoadRequest.addHeader("Accept", "image/" + ((FormatTransform) (transformation.getTransforms().get(0))).getFormat().getFormat());
+        } else {
+            for (CITransform transform : transformation.getTransforms()) {
+                //多个操作时，图片格式转换操作的formatOptions必须为UrlFooter，否则会失效
+                if (transform instanceof FormatTransform) {
+                    ((FormatTransform) transform).formatOptionsToUrlFooter();
+                }
+                param.append(transform.getTransformString()).append("|");
             }
-        } else if (transformation.getZoomType() == CIImageZoomType.WithHeight) {
-            if (transformation.getHeight() != 0) {
-                zoomParam = "/thumbnail/x" + transformation.getHeight();
-            }
-        } else if (transformation.getZoomType() == CIImageZoomType.WithWidthHeight) {
-            if (transformation.getWidth() != 0 && transformation.getHeight() != 0) {
-                zoomParam = String.format("%dx%d!", transformation.getWidth(), transformation.getHeight());
-            }
+            //删除最后一个|
+            param.deleteCharAt(param.length() - 1);
         }
 
-        //构造新的URL(由于重复参数会以第一个为准，因此此处先不考虑去重，只是将新的参数 插入到imageMogr2最前面)
+        //构造新的URL(由于重复参数会以第一个为准，因此此处先不考虑去重，只是将新的转换参数插入到第一个URL参数)
         String urlStr = url.toString();
-        int imageMogr2Index = urlStr.indexOf("imageMogr2");
-        if (imageMogr2Index == -1) {
-            if(!TextUtils.isEmpty(formatParam) || !TextUtils.isEmpty(zoomParam)) {
-                urlStr = UrlUtil.attachGetParams(urlStr, "imageMogr2" + formatParam + zoomParam);
+        int questionMarkIndex = urlStr.indexOf("?");
+        if (questionMarkIndex == -1) {
+            if (!TextUtils.isEmpty(param)) {
+                urlStr = urlStr + "?" + param.toString();
             }
         } else {
             StringBuilder urlBuilder = new StringBuilder(urlStr);
-            urlBuilder.insert(imageMogr2Index+10, formatParam + zoomParam);
+            urlBuilder.insert(questionMarkIndex + 1, param.toString() + "&");
             urlStr = urlBuilder.toString();
         }
 

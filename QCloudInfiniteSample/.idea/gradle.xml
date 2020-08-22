@@ -15,8 +15,8 @@
             <option value="$PROJECT_DIR$/../QCloudInfinite/cloudInfiniteLoader" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/../QCloudTpgImage/cloudInfinite_glide" />
             <option value="$PROJECT_DIR$/../QCloudTpgImage/tpgimage" />
-            <option value="$PROJECT_DIR$/../QCloudTpgImage/tpgimage_glide" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

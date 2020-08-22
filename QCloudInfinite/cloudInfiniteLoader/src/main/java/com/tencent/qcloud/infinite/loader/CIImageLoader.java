@@ -24,6 +24,8 @@ package com.tencent.qcloud.infinite.loader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -39,9 +41,16 @@ import com.tencent.qcloud.core.http.QCloudHttpClient;
 import com.tencent.qcloud.core.http.QCloudHttpRequest;
 import com.tencent.qcloud.core.http.ResponseBodyConverter;
 import com.tencent.qcloud.infinite.CIImageLoadRequest;
+import com.tencent.qcloud.infinite.utils.UrlUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static com.tencent.qcloud.core.http.HttpConstants.RequestMethod.GET;
 
@@ -82,7 +91,7 @@ public class CIImageLoader {
         httpTask.addResultListener(new QCloudResultListener<HttpResult<byte[]>>() {
             @Override
             public void onSuccess(HttpResult<byte[]> result) {
-                if(riv.get()==null) return;
+                if (riv.get() == null) return;
                 final ImageView imageView = riv.get();
 
                 if (result.isSuccessful()) {
@@ -118,7 +127,7 @@ public class CIImageLoader {
                     serviceException.printStackTrace();
                 }
 
-                if(riv.get()==null) return;
+                if (riv.get() == null) return;
                 final ImageView imageView = riv.get();
 
                 imageView.post(new Runnable() {
@@ -158,6 +167,107 @@ public class CIImageLoader {
         });
     }
 
+    /**
+     * imageview预加载图片主色
+     *
+     * @param imageView 图片控件
+     * @param objectUrl 图片URL
+     */
+    public void preloadWithAveColor(@NonNull ImageView imageView, @NonNull URL objectUrl) {
+        String url = UrlUtil.attachGetParams(objectUrl.toString(), "imageAve");
+        try {
+            objectUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        final Reference<ImageView> riv = new WeakReference<>(imageView);
+
+        HttpTask<String> httpTask = buildHttpTask(objectUrl);
+        httpTask.schedule();
+        httpTask.addResultListener(new QCloudResultListener<HttpResult<String>>() {
+            @Override
+            public void onSuccess(HttpResult<String> result) {
+                if (result.isSuccessful()) {
+                    if (riv.get() == null) return;
+                    final ImageView imageView = riv.get();
+
+                    final String rgb = parseRgb(result.content());
+                    if (TextUtils.isEmpty(rgb)) return;
+
+                    imageView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageView.setBackgroundColor(Color.parseColor(rgb));
+                        }
+                    });
+                } else {
+                    Log.w(TAG, String.format("http request failure, code:%d, message:%s", result.code(), result.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(QCloudClientException clientException, QCloudServiceException serviceException) {
+                if (clientException != null) {
+                    clientException.printStackTrace();
+                }
+                if (serviceException != null) {
+                    serviceException.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取图片主色
+     *
+     * @param objectUrl 图片URL
+     * @param callBack  结果回调
+     */
+    public void getImageAveColor(@NonNull URL objectUrl, final CIImageAveColorCallBack callBack) {
+       String url = UrlUtil.attachGetParams(objectUrl.toString(), "imageAve");
+        try {
+            objectUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        HttpTask<String> httpTask = buildHttpTask(objectUrl);
+        httpTask.schedule();
+        httpTask.addResultListener(new QCloudResultListener<HttpResult<String>>() {
+            @Override
+            public void onSuccess(HttpResult<String> result) {
+                if (result.isSuccessful()) {
+                    callBack.onImageAveColor(parseRgb(result.content()));
+                } else {
+                    Log.w(TAG, String.format("http request failure, code:%d, message:%s", result.code(), result.message()));
+                    callBack.onImageAveColor("");
+                }
+            }
+
+            @Override
+            public void onFailure(QCloudClientException clientException, QCloudServiceException serviceException) {
+                callBack.onFailure(clientException, serviceException);
+            }
+        });
+    }
+
+    private String parseRgb(String jsonStr) {
+        try {
+            JSONTokener jsonParser = new JSONTokener(jsonStr);
+            JSONObject jsonObject = (JSONObject) jsonParser.nextValue();
+
+            if (!jsonObject.has("RGB")) return "";
+            String rgb = jsonObject.getString("RGB");
+            if (TextUtils.isEmpty(rgb)) return "";
+
+            return rgb.replaceFirst("0x","#");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     private HttpTask<byte[]> buildHttpTask(@NonNull CIImageLoadRequest imageLoadRequest) {
         QCloudHttpRequest.Builder<byte[]> httpRequestBuilder = new QCloudHttpRequest.Builder<byte[]>()
                 .method(GET);
@@ -165,6 +275,16 @@ public class CIImageLoader {
         httpRequestBuilder.url(imageLoadRequest.getUrl());
         httpRequestBuilder.converter(ResponseBodyConverter.bytes());
         QCloudHttpRequest<byte[]> httpRequest = httpRequestBuilder.build();
+
+        return client.resolveRequest(httpRequest);
+    }
+
+    private HttpTask<String> buildHttpTask(@NonNull URL url) {
+        QCloudHttpRequest.Builder<String> httpRequestBuilder = new QCloudHttpRequest.Builder<String>()
+                .method(GET);
+        httpRequestBuilder.url(url);
+        httpRequestBuilder.converter(ResponseBodyConverter.string());
+        QCloudHttpRequest<String> httpRequest = httpRequestBuilder.build();
 
         return client.resolveRequest(httpRequest);
     }

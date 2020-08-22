@@ -31,60 +31,121 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_imagelist"
+        <Button
+            android:id="@+id/btn_responsive"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <ImageView
-            android:id="@+id/iv_original"
-            android:layout_width="280dp"
-            android:layout_height="210dp"
-            android:layout_marginTop="20dp"
-            android:background="#e4e4e4" />
-        <LinearLayout
-            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:background="#e4e4e4"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_original"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#333333" />
-            <TextView
-                android:id="@+id/tv_original_consume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="#333333" />
-        </LinearLayout>
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="0：自适应图片加载"/>
 
-
-        <ImageView
-            android:id="@+id/iv_tpg"
-            android:layout_width="280dp"
-            android:layout_height="210dp"
-            android:layout_marginTop="20dp"
-            android:background="#e4e4e4" />
-        <LinearLayout
-            android:layout_width="280dp"
+        <Button
+            android:id="@+id/btn_tpg"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:background="#e4e4e4"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_tpg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#333333" />
-            <TextView
-                android:id="@+id/tv_tpg_consume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="#333333" />
-        </LinearLayout>
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="1：TPG图片加载"/>
+
+        <Button
+            android:id="@+id/btn_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="2：缩放"/>
+
+        <Button
+            android:id="@+id/btn_crop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="3：剪裁"/>
+
+        <Button
+            android:id="@+id/btn_rotate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="4：旋转"/>
+
+        <Button
+            android:id="@+id/btn_format"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="5：格式转换"/>
+
+        <Button
+            android:id="@+id/btn_gif_opt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="6：GIF优化"/>
+
+        <Button
+            android:id="@+id/btn_quality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="7：质量调节"/>
+
+        <Button
+            android:id="@+id/btn_blur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="8：高斯模糊"/>
+
+        <Button
+            android:id="@+id/btn_sharpen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="9：锐化"/>
+
+        <Button
+            android:id="@+id/btn_watermark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="10：图片水印、文字水印"/>
+
+        <Button
+            android:id="@+id/btn_ave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="11：图片主色"/>
+
+        <Button
+            android:id="@+id/btn_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="12：去除元信息"/>
     </LinearLayout>
 </ScrollView>

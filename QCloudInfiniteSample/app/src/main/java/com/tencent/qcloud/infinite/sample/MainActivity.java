@@ -22,211 +22,76 @@
 
 package com.tencent.qcloud.infinite.sample;
 
-import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.tencent.qcloud.infinite.CIImageFormat;
-import com.tencent.qcloud.infinite.CIImageLoadOptions;
-import com.tencent.qcloud.infinite.CIImageLoadRequest;
-import com.tencent.qcloud.infinite.CITransformation;
-import com.tencent.qcloud.infinite.CloudInfinite;
-import com.tencent.qcloud.infinite.CloudInfiniteCallback;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-public class MainActivity extends AppCompatActivity {
-    private RecyclerView rv_imagelist;
-    private ImageView iv_original;
-    private ImageView iv_tpg;
-    private TextView tv_original;
-    private TextView tv_tpg;
-    private TextView tv_original_consume;
-    private TextView tv_tpg_consume;
-
-    private ImageListAdapter mAdapter;
-
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rv_imagelist = findViewById(R.id.rv_imagelist);
-        iv_original = findViewById(R.id.iv_original);
-        iv_tpg = findViewById(R.id.iv_tpg);
-        tv_original = findViewById(R.id.tv_original);
-        tv_tpg = findViewById(R.id.tv_tpg);
-        tv_original_consume = findViewById(R.id.tv_original_consume);
-        tv_tpg_consume = findViewById(R.id.tv_tpg_consume);
-
-        //创建默认的线性横向LayoutManager
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rv_imagelist.setLayoutManager(linearLayoutManager);
-        rv_imagelist.setHasFixedSize(true);
-        rv_imagelist.addItemDecoration(new ImageListDecoration());
-
-        setData();
+        findViewById(R.id.btn_responsive).setOnClickListener(this);
+        findViewById(R.id.btn_tpg).setOnClickListener(this);
+        findViewById(R.id.btn_thumbnail).setOnClickListener(this);
+        findViewById(R.id.btn_crop).setOnClickListener(this);
+        findViewById(R.id.btn_rotate).setOnClickListener(this);
+        findViewById(R.id.btn_format).setOnClickListener(this);
+        findViewById(R.id.btn_gif_opt).setOnClickListener(this);
+        findViewById(R.id.btn_quality).setOnClickListener(this);
+        findViewById(R.id.btn_blur).setOnClickListener(this);
+        findViewById(R.id.btn_sharpen).setOnClickListener(this);
+        findViewById(R.id.btn_watermark).setOnClickListener(this);
+        findViewById(R.id.btn_ave).setOnClickListener(this);
+        findViewById(R.id.btn_strip).setOnClickListener(this);
     }
 
-    @SuppressLint("DefaultLocale")
-    public void setData() {
-        //填充测试数据
-        ArrayList<ImageBean> list = new ArrayList<>(8);
-        try {
-            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/01.jpg"), "JPG"));
-            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/02.jpg"), "JPG"));
-            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/03.jpg"), "JPG"));
-            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/04.jpg"), "JPG"));
-            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/05.png"), "PNG"));
-            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/06.png"), "PNG"));
-            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/07.png"), "PNG"));
-            list.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/08.png"), "PNG"));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_responsive:
+                startActivity(new Intent(this, ResponsiveActivity.class));
+                break;
+            case R.id.btn_tpg:
+                startActivity(new Intent(this, TpgActivity.class));
+                break;
+            case R.id.btn_thumbnail:
+                startActivity(new Intent(this, ThumbnailActivity.class));
+                break;
+            case R.id.btn_crop:
+                startActivity(new Intent(this, CropActivity.class));
+                break;
+            case R.id.btn_rotate:
+                startActivity(new Intent(this, RotateActivity.class));
+                break;
+            case R.id.btn_format:
+                startActivity(new Intent(this, FormatActivity.class));
+                break;
+            case R.id.btn_gif_opt:
+                startActivity(new Intent(this, GifOptActivity.class));
+                break;
+            case R.id.btn_quality:
+                startActivity(new Intent(this, QualityActivity.class));
+                break;
+            case R.id.btn_blur:
+                startActivity(new Intent(this, BlurActivity.class));
+                break;
+            case R.id.btn_sharpen:
+                startActivity(new Intent(this, SharpenActivity.class));
+                break;
+            case R.id.btn_watermark:
+                startActivity(new Intent(this, WatermarkActivity.class));
+                break;
+            case R.id.btn_ave:
+                startActivity(new Intent(this, ImageAveActivity.class));
+                break;
+            case R.id.btn_strip:
+                startActivity(new Intent(this, StripActivity.class));
+                break;
         }
-
-        mAdapter = new ImageListAdapter(list);
-        mAdapter.setOnClickListener(new ImageListAdapter.OnClickListener() {
-            @Override
-            public void onClick(ImageBean image) {
-                onItemClick(image);
-            }
-        });
-        rv_imagelist.setAdapter(mAdapter);
-        onItemClick(list.get(0));
-    }
-
-    @SuppressLint("DefaultLocale")
-    private void onItemClick(final ImageBean image) {
-        iv_original.setImageBitmap(null);
-        iv_tpg.setImageBitmap(null);
-        tv_original.setText("");
-        tv_tpg.setText("");
-        tv_original_consume.setText("");
-        tv_tpg_consume.setText("");
-
-        //为了展示原始的加载速度，不适用缓存
-        final long start = System.nanoTime();
-        Glide.with(MainActivity.this)
-                .load(new CIImageLoadRequest(image.url))
-                .skipMemoryCache(true) //不使用内存缓存
-                .diskCacheStrategy(DiskCacheStrategy.NONE) //不使用磁盘缓存
-                .addListener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        long consume = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
-                        tv_original_consume.setText(String.format("耗时：%.2fs", consume / 1000f));
-                        return false;
-                    }
-                })
-                .into(iv_original);
-
-        //获取并展示图片大小（仅做演示）
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //获取原始文件大小
-                final int originalSize = getFileSzie(image.url, null);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //设置原始图片信息
-                        tv_original.setText(String.format("格式：%s   原大小:%s", image.format, Utils.readableStorageSize(originalSize)));
-                    }
-                });
-            }
-        }).start();
-
-        //创建数据万象操作器
-        CloudInfinite cloudInfinite = new CloudInfinite();
-        //根据原始URL和要进行的操作CITransformation，生成图片加载请求CIImageLoadRequest
-        cloudInfinite.requestWithBaseUrl(image.url, new CITransformation().format(CIImageFormat.TPG, CIImageLoadOptions.LoadTypeAcceptHeader), new CloudInfiniteCallback() {
-            @Override
-            public void onImageLoadRequest(@NonNull final CIImageLoadRequest request) {
-                //为了展示原始的加载速度，不适用缓存
-                //使用glide加载CIImageLoadRequest
-                final long start = System.nanoTime();
-                Glide.with(MainActivity.this)
-                        .load(request)
-                        .skipMemoryCache(true) //不使用内存缓存
-                        .diskCacheStrategy(DiskCacheStrategy.NONE) //不使用磁盘缓存
-                        .addListener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                long consume = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
-                                tv_tpg_consume.setText(String.format("耗时：%.2fs", consume / 1000f));
-                                return false;
-                            }
-                        })
-                        .into(iv_tpg);
-
-                //获取并展示图片大小（仅做演示）
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //获取TPG文件大小
-                        final int tpgSize = getFileSzie(request.getUrl(), request.getHeaders());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //设置TPG图片信息
-                                tv_tpg.setText(String.format("格式：%s   图片大小:%s", "TPG", Utils.readableStorageSize(tpgSize)));
-                            }
-                        });
-                    }
-                }).start();
-
-            }
-        });
-    }
-
-    /**
-     * 获取远程文件大小
-     */
-    private int getFileSzie(URL url, Map<String, List<String>> header) {
-        int originalSize = 0;
-        try {
-            URLConnection connection = url.openConnection();
-            if (header != null && header.size() > 0) {
-                for (String key : header.keySet())
-                    connection.addRequestProperty(key, header.get(key).get(0));
-            }
-            originalSize = connection.getContentLength();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return originalSize;
     }
 }

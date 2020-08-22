@@ -20,12 +20,12 @@
  *  SOFTWARE.
  */
 
-include ':app', ':foundation', ':cloudInfinite', ':cloudInfiniteLoader', ':tpgimage', ':tpgimage_glide'
+include ':app', ':foundation', ':cloudInfinite', ':cloudInfiniteLoader', ':tpgimage', ':cloudInfinite_glide'
 
 project(':foundation').projectDir = new File(rootDir, '..//QCloudFoundation/foundation')
 project(':cloudInfinite').projectDir = new File(rootDir, '..//QCloudInfinite/cloudInfinite')
 project(':cloudInfiniteLoader').projectDir = new File(rootDir, '..//QCloudInfinite/cloudInfiniteLoader')
 project(':tpgimage').projectDir = new File(rootDir, '..//QCloudTpgImage/tpgimage')
-project(':tpgimage_glide').projectDir = new File(rootDir, '..//QCloudTpgImage/tpgimage_glide')
+project(':cloudInfinite_glide').projectDir = new File(rootDir, '..//QCloudTpgImage/cloudInfinite_glide')
 
 rootProject.name = "QCloudInfiniteSample"

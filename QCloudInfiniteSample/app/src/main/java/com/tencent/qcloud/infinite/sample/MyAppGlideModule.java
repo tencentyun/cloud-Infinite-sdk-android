@@ -33,9 +33,11 @@ import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.module.AppGlideModule;
 import com.tencent.qcloud.image.tpg.glide.ByteBufferTpgGifDecoder;
-import com.tencent.qcloud.image.tpg.glide.CIImageRequestModelLoader;
+import com.tencent.qcloud.image.tpg.glide.StreamTpgGifDecoder;
 import com.tencent.qcloud.image.tpg.glide.TpgDecoder;
 import com.tencent.qcloud.infinite.CIImageLoadRequest;
+import com.tencent.qcloud.infinite.glide.CIImageRequestModelLoader;
+import com.tencent.qcloud.infinite.glide.ImageAveDecoder;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -57,7 +59,11 @@ public class MyAppGlideModule extends AppGlideModule {
         //注册TPG静态图片解码器
         registry.prepend(InputStream.class, Bitmap.class, new TpgDecoder(glide.getBitmapPool()));
         //注册TPG动图解码器
-        registry.prepend(ByteBuffer.class, GifDrawable.class, new ByteBufferTpgGifDecoder(context, glide.getBitmapPool()));
+        ByteBufferTpgGifDecoder byteBufferTpgGifDecoder = new ByteBufferTpgGifDecoder(context, glide.getBitmapPool());
+        registry.prepend(InputStream.class, GifDrawable.class, new StreamTpgGifDecoder(byteBufferTpgGifDecoder));
+        registry.prepend(ByteBuffer.class, GifDrawable.class, byteBufferTpgGifDecoder);
+        //注册主色解码器
+        registry.prepend(InputStream.class, Bitmap.class, new ImageAveDecoder(glide.getBitmapPool()));
         /*------------------解码器 结束-------------------------*/
     }
 }
