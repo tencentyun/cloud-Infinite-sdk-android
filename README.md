@@ -2,11 +2,11 @@
 
 ### 相关资源
 
-SDK源码以及demo 请参考： [CloudInfinite Android SDK](https://github.com/tencentyun/cloud-Infinite-sdk-android.git)
-SDK接口与参数文档请参考： [数据万象 SDK API](https://cloud.tencent.com/document/product/460/36540)
-云闪图片分发介绍请参考：[云闪图片分发](https://cloud.tencent.com/solution/image-delivery)
-TPG功能介绍：[TPG](https://cloud.tencent.com/document/product/460/43680)
-SDK更新日志请参考：[更新日志](#changelog)
+* SDK源码以及demo 请参考： [CloudInfinite Android SDK](https://github.com/tencentyun/cloud-Infinite-sdk-android.git)
+* SDK接口与参数文档请参考： [数据万象 SDK API](https://cloud.tencent.com/document/product/460/36540)
+* 云闪图片分发介绍请参考：[云闪图片分发](https://cloud.tencent.com/solution/image-delivery)
+* TPG功能介绍：[TPG](https://cloud.tencent.com/document/product/460/43680)
+* SDK更新日志请参考：[更新日志](#changelog)
 
 ## 文档概览
 
