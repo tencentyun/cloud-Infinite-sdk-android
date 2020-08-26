@@ -31,12 +31,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.tencent.qcloud.infinite.CIImageLoadRequest;
 import com.tencent.qcloud.infinite.CITransformation;
 import com.tencent.qcloud.infinite.CloudInfinite;
 import com.tencent.qcloud.infinite.CloudInfiniteCallback;
+import com.tencent.qcloud.infinite.sample.base.BaseActivity;
 import com.tencent.qcloud.infinite.sample.base.BaseImageInfoView;
 import com.tencent.qcloud.infinite.sample.base.BaseImageListView;
 import com.tencent.qcloud.infinite.sample.base.ImageBean;
@@ -44,7 +44,7 @@ import com.tencent.qcloud.infinite.sample.base.ImageBean;
 /**
  * 水印使用示例，详细使用方式请参考文档
  */
-public class QualityActivity extends AppCompatActivity implements BaseImageListView.OnClickListener {
+public class QualityActivity extends BaseActivity implements BaseImageListView.OnClickListener {
     private BaseImageInfoView view_imageinfo;
     private RadioButton rb_quality;
     private RadioButton rb_relatively;

@@ -29,17 +29,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.tencent.qcloud.infinite.CIImageLoadRequest;
 import com.tencent.qcloud.infinite.CITransformation;
 import com.tencent.qcloud.infinite.CloudInfinite;
 import com.tencent.qcloud.infinite.CloudInfiniteCallback;
+import com.tencent.qcloud.infinite.sample.base.BaseActivity;
 import com.tencent.qcloud.infinite.sample.base.BaseImageInfoView;
 import com.tencent.qcloud.infinite.sample.base.BaseImageListView;
 import com.tencent.qcloud.infinite.sample.base.ImageBean;
 
-public class BlurActivity extends AppCompatActivity implements BaseImageListView.OnClickListener {
+public class BlurActivity extends BaseActivity implements BaseImageListView.OnClickListener {
     private BaseImageInfoView view_imageinfo;
     private SeekBar sb_radius;
     private TextView tv_radius;

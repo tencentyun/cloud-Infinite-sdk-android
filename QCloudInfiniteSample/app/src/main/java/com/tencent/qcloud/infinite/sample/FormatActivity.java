@@ -25,24 +25,26 @@ package com.tencent.qcloud.infinite.sample;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.tencent.qcloud.infinite.CIImageLoadRequest;
 import com.tencent.qcloud.infinite.CITransformation;
 import com.tencent.qcloud.infinite.CloudInfinite;
 import com.tencent.qcloud.infinite.CloudInfiniteCallback;
 import com.tencent.qcloud.infinite.enumm.CIImageFormat;
+import com.tencent.qcloud.infinite.sample.base.BaseActivity;
 import com.tencent.qcloud.infinite.sample.base.BaseImageInfoView;
 import com.tencent.qcloud.infinite.sample.base.BaseImageListView;
 import com.tencent.qcloud.infinite.sample.base.ImageBean;
 
-public class FormatActivity extends AppCompatActivity implements BaseImageListView.OnClickListener {
+public class FormatActivity extends BaseActivity implements BaseImageListView.OnClickListener {
     private BaseImageInfoView view_imageinfo;
     private RadioGroup rg_format;
 
     private ImageBean imageBean;
+    private CIImageFormat selectFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,47 +61,37 @@ public class FormatActivity extends AppCompatActivity implements BaseImageListVi
         if (currentapiVersion >= 18) {
             findViewById(R.id.rb_webp).setVisibility(View.VISIBLE);
         }
-        if(currentapiVersion >= 29) {
+        if (currentapiVersion >= 29) {
             findViewById(R.id.rb_heif).setVisibility(View.VISIBLE);
         }
 
-        final CITransformation ciTransformation = new CITransformation();
         rg_format.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rb_tpg:
-                        ciTransformation.format(CIImageFormat.TPG);
-                        imageBean.format = CIImageFormat.TPG.getFormat().toUpperCase();
+                        selectFormat = CIImageFormat.TPG;
                         break;
                     case R.id.rb_png:
-                        ciTransformation.format(CIImageFormat.PNG);
-                        imageBean.format = CIImageFormat.PNG.getFormat().toUpperCase();
+                        selectFormat = CIImageFormat.PNG;
                         break;
                     case R.id.rb_jpg:
-                        ciTransformation.format(CIImageFormat.JPEG);
-                        imageBean.format = CIImageFormat.JPEG.getFormat().toUpperCase();
+                        selectFormat = CIImageFormat.JPEG;
                         break;
                     case R.id.rb_bmp:
-                        //示例图片分辨率太大，bmp格式会因为图片太大显示不出来，因此进行缩小
-                        ciTransformation.thumbnailByMaxWH(840, 630).format(CIImageFormat.BMP);
-                        imageBean.format = CIImageFormat.BMP.getFormat().toUpperCase();
+                        selectFormat = CIImageFormat.BMP;
                         break;
                     case R.id.rb_gif:
-                        ciTransformation.format(CIImageFormat.GIF);
-                        imageBean.format = CIImageFormat.GIF.getFormat().toUpperCase();
+                        selectFormat = CIImageFormat.GIF;
                         break;
                     case R.id.rb_webp:
-                        ciTransformation.format(CIImageFormat.WEBP);
-                        imageBean.format = CIImageFormat.WEBP.getFormat().toUpperCase();
+                        selectFormat = CIImageFormat.WEBP;
                         break;
                     case R.id.rb_yjpeg:
-                        ciTransformation.format(CIImageFormat.YJPEG);
-                        imageBean.format = CIImageFormat.YJPEG.getFormat().toUpperCase();
+                        selectFormat = CIImageFormat.YJPEG;
                         break;
                     case R.id.rb_heif:
-                        ciTransformation.format(CIImageFormat.HEIF);
-                        imageBean.format = CIImageFormat.HEIF.getFormat().toUpperCase();
+                        selectFormat = CIImageFormat.HEIF;
                         break;
                 }
             }
@@ -108,11 +100,31 @@ public class FormatActivity extends AppCompatActivity implements BaseImageListVi
         findViewById(R.id.btn_load).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if("GIF".equals(imageBean.format) && selectFormat == CIImageFormat.HEIF){
+                    Toast.makeText(FormatActivity.this, "不支持将 GIF 格式图片转换为 HEIF 格式", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 CloudInfinite cloudInfinite = new CloudInfinite();
+                CITransformation ciTransformation = new CITransformation();
+                if (selectFormat != null) {
+                    ciTransformation.format(selectFormat);
+
+                    //示例图片分辨率太大，bmp格式会因为图片太大显示不出来，因此进行缩小
+                    if(selectFormat == CIImageFormat.BMP){
+                        ciTransformation.thumbnailByMaxWH(840, 630);
+                    }
+                }
                 cloudInfinite.requestWithBaseUrl(imageBean.url, ciTransformation, new CloudInfiniteCallback() {
                     @Override
                     public void onImageLoadRequest(@NonNull CIImageLoadRequest request) {
-                        view_imageinfo.setData(request.getUrl(), imageBean.format);
+                        if("GIF".equals(imageBean.format) && selectFormat == CIImageFormat.TPG){
+                            //动图TPG跳过缓存加载时也需要asGif
+                            view_imageinfo.setData(request.getUrl(), "GIF");
+                        } else {
+                            view_imageinfo.setData(request.getUrl(), selectFormat.getFormat().toUpperCase());
+                        }
+
                     }
                 });
             }

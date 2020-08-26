@@ -20,42 +20,33 @@
  *  SOFTWARE.
  */
 
-apply plugin: 'com.android.library'
+package com.tencent.qcloud.infinite.sample.base;
 
-android {
-    compileSdkVersion 28
-    buildToolsVersion "30.0.0"
+import android.os.Bundle;
+import android.view.MenuItem;
 
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 10300
-        versionName "1.3.0"
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
+public abstract class BaseActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
-
-dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    compileOnly 'androidx.appcompat:appcompat:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-}
-
-// 发布到 bintray
-project.extensions.add('artifactId', 'tpg')
-project.extensions.add('packageType', 'aar')
-project.extensions.add('artifactDesc', 'the tencent cloud tpg image android sdk')
-
-// 添加发布脚本
-apply from: '../../publish.gradle'

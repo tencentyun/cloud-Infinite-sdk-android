@@ -81,17 +81,17 @@ public class BaseImageListView extends RecyclerView {
             if (dataType == ALL) {
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/01.jpg"), "JPG"));
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/02.jpg"), "JPG"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif4.gif"), "GIF"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif2.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif4.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif2.gif"), "GIF"));
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/03.jpg"), "JPG"));
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/04.jpg"), "JPG"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/dingdang.gif"), "GIF"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif1.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/dingdang.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif1.gif"), "GIF"));
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/05.png"), "PNG"));
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/06.png"), "PNG"));
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/07.png"), "PNG"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif3.gif"), "GIF"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif5.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif3.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif5.gif"), "GIF"));
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/08.png"), "PNG"));
             } else if (dataType == STATICL) {
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/01.jpg"), "JPG"));
@@ -103,12 +103,12 @@ public class BaseImageListView extends RecyclerView {
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/07.png"), "PNG"));
                 data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/08.png"), "PNG"));
             } else if (dataType == GIF) {
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif4.gif"), "GIF"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif2.gif"), "GIF"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/dingdang.gif"), "GIF"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif1.gif"), "GIF"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif3.gif"), "GIF"));
-                data.add(new ImageBean(new URL("https://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/gif5.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif4.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif2.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/dingdang.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif1.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif3.gif"), "GIF"));
+                data.add(new ImageBean(new URL("https://tpg-1253653367.file.myqcloud.com/gif5.gif"), "GIF"));
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();

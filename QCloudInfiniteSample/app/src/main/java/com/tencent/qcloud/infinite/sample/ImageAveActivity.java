@@ -27,17 +27,17 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.tencent.qcloud.infinite.sample.base.BaseActivity;
 import com.tencent.qcloud.infinite.sample.base.ImageBean;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class ImageAveActivity extends AppCompatActivity {
+public class ImageAveActivity extends BaseActivity {
     private RecyclerView rv_imagelist;
     private ImageAveListAdapter mAdapter;
 

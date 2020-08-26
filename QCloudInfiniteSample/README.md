@@ -1,2 +1,0 @@
-# QCloudInfiniteSample
-示例项目，展示了SDK的使用，以及TPG各式图片的优势

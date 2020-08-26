@@ -117,6 +117,15 @@ public class TPGDecoder {
 		return GetDelayTime2(mhDec, index);
 	}
 
+	public int decodeOneFrame(byte[] stream, int index, Bitmap bm) {
+		int res = 0;
+		if ((res = DecodeImageToBitmap(mhDec, stream, index, bm, 0)) > 0) {
+			System.out.println("decode error: ");
+		}
+
+		return res;
+	}
+
 	public int decodeOneFrame(byte[] stream, int index, int[] outData,
 			Bitmap bm, int[] delayTime) {
 

@@ -25,6 +25,7 @@ package com.tencent.qcloud.infinite.sample.base;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -90,8 +91,6 @@ public class BaseImageInfoView extends LinearLayout {
         tv_format.setText("");
         tv_consume.setText("");
 
-        tv_format.setText("格式：" + format);
-
         final long start = System.nanoTime();
         if ("GIF".equals(format)) {
             //如果是GIF，则需要asGif()，不然设置不使用缓存时会只显示第一帧
@@ -102,6 +101,8 @@ public class BaseImageInfoView extends LinearLayout {
                     .addListener(new RequestListener<GifDrawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+                            long consume = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+                            tv_consume.setText(String.format("耗时：%.2fs", consume / 1000f));
                             return false;
                         }
 
@@ -120,8 +121,11 @@ public class BaseImageInfoView extends LinearLayout {
                     .skipMemoryCache(true) //不使用内存缓存
                     .diskCacheStrategy(DiskCacheStrategy.NONE) //不使用磁盘缓存
                     .addListener(new RequestListener<Drawable>() {
+                        @SuppressLint("DefaultLocale")
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            long consume = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+                            tv_consume.setText(String.format("耗时：%.2fs", consume / 1000f));
                             return false;
                         }
 
@@ -136,38 +140,41 @@ public class BaseImageInfoView extends LinearLayout {
                     .into(iv_image);
         }
 
-        //获取并展示图片大小（仅做演示）
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //获取原始文件大小
-                final int originalSize = getFileSzie(url, null);
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //设置原始图片信息
-                        tv_size.setText(String.format("大小：%s", Utils.readableStorageSize(originalSize)));
-                    }
-                });
-            }
-        }).start();
+        getFileSizeType(url, null);
     }
 
     /**
-     * 获取远程文件大小
+     * 获取并设置远程文件大小和type（仅做演示）
      */
-    private int getFileSzie(URL url, Map<String, List<String>> header) {
-        int originalSize = 0;
-        try {
-            URLConnection connection = url.openConnection();
-            if (header != null && header.size() > 0) {
-                for (String key : header.keySet())
-                    connection.addRequestProperty(key, header.get(key).get(0));
+    private void getFileSizeType(final URL url, final Map<String, List<String>> header) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URLConnection connection = url.openConnection();
+                    if (header != null && header.size() > 0) {
+                        for (String key : header.keySet())
+                            connection.addRequestProperty(key, header.get(key).get(0));
+                    }
+                    final int size = connection.getContentLength();
+                    String contentType = connection.getContentType();
+                    if (!TextUtils.isEmpty(contentType) && contentType.startsWith("image/")) {
+                        contentType = contentType.replace("image/", "").toUpperCase();
+                    }
+
+                    final String finalContentType = contentType;
+                    post(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
+                            tv_format.setText("格式：" + finalContentType);
+                            tv_size.setText(String.format("大小：%s", Utils.readableStorageSize(size)));
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            originalSize = connection.getContentLength();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return originalSize;
+        }).start();
     }
 }

@@ -27,13 +27,13 @@ import android.view.View;
 import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.tencent.qcloud.infinite.CIImageLoadRequest;
 import com.tencent.qcloud.infinite.CITransformation;
 import com.tencent.qcloud.infinite.CloudInfinite;
 import com.tencent.qcloud.infinite.CloudInfiniteCallback;
 import com.tencent.qcloud.infinite.enumm.CIGravity;
+import com.tencent.qcloud.infinite.sample.base.BaseActivity;
 import com.tencent.qcloud.infinite.sample.base.BaseImageInfoView;
 import com.tencent.qcloud.infinite.sample.base.BaseImageListView;
 import com.tencent.qcloud.infinite.sample.base.ImageBean;
@@ -43,7 +43,7 @@ import com.tencent.qcloud.infinite.transform.WatermarkTextTransform;
 /**
  * 水印使用示例，详细使用方式请参考文档
  */
-public class WatermarkActivity extends AppCompatActivity implements BaseImageListView.OnClickListener {
+public class WatermarkActivity extends BaseActivity implements BaseImageListView.OnClickListener {
     private BaseImageInfoView view_imageinfo;
     private RadioButton rb_image;
     private RadioButton rb_text;
@@ -68,7 +68,7 @@ public class WatermarkActivity extends AppCompatActivity implements BaseImageLis
                 CloudInfinite cloudInfinite = new CloudInfinite();
                 CITransformation ciTransformation = new CITransformation();
                 if(rb_image.isChecked()){
-                    WatermarkImageTransform watermarkImageTransform = new WatermarkImageTransform.Builder("http://tpg-1253653367.cos.ap-guangzhou.myqcloud.com/google.jpg")
+                    WatermarkImageTransform watermarkImageTransform = new WatermarkImageTransform.Builder("http://tpg-1253653367.file.myqcloud.com/google.jpg")
                             .setGravity(CIGravity.CENTER).builder();
                     ciTransformation.watermarkImage(watermarkImageTransform);
                 } else if(rb_text.isChecked()){

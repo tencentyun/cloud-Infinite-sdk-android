@@ -147,5 +147,15 @@
             android:paddingLeft="30dp"
             android:drawableRight="@drawable/arrow"
             android:text="12：去除元信息"/>
+
+        <Button
+            android:id="@+id/btn_gif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:visibility="gone"
+            android:text="13：GIF TPG"/>
     </LinearLayout>
 </ScrollView>

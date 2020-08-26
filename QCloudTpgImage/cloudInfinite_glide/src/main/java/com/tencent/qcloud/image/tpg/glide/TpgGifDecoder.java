@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.gifdecoder.GifDecoder;
 import com.bumptech.glide.gifdecoder.GifHeader;
+import com.bumptech.glide.load.resource.gif.GifBitmapProvider;
 import com.tencent.tpg.TPGDecoder;
 
 import java.io.ByteArrayOutputStream;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tencent.tpg.Utils.TPG_STATUS_OK;
 
@@ -44,7 +46,7 @@ import static com.tencent.tpg.Utils.TPG_STATUS_OK;
  * TPG 动图解码器
  */
 public class TpgGifDecoder implements GifDecoder {
-    private static final String TAG = "TpgGifDecoder";
+    static final String TAG = "TpgGifDecoder";
 
     private static final int INITIAL_FRAME_POINTER = -1;
 
@@ -62,10 +64,15 @@ public class TpgGifDecoder implements GifDecoder {
     private ByteBuffer rawData;
     private byte[] rawBytes;
 
+    private final GifBitmapProvider provider;
+
+    private final Object lock = new Object();
+
     @NonNull
     private Bitmap.Config bitmapConfig = Bitmap.Config.ARGB_8888;
 
-    public TpgGifDecoder(ByteBuffer rawData, int sampleSize) {
+    public TpgGifDecoder(ByteBuffer rawData, int sampleSize, GifBitmapProvider provider) {
+        this.provider = provider;
         setData(null, rawData, sampleSize);
     }
 
@@ -169,14 +176,17 @@ public class TpgGifDecoder implements GifDecoder {
         }
         status = STATUS_OK;
 
-        final Bitmap bm = Bitmap.createBitmap(downsampledWidth,
+        final Bitmap bm = provider.obtain(downsampledWidth,
                 downsampledHeight, bitmapConfig);
-        int[] outData = new int[downsampledWidth * downsampledHeight];
-        int[] delayTime = new int[1];
-        int tpgStatus = pTPG.decodeOneFrame(rawBytes, framePointer, outData, bm,
-                delayTime);
-        if (tpgStatus != TPG_STATUS_OK) {
-            this.status = STATUS_PARTIAL_DECODE;
+        synchronized (lock) {
+            int[] outData = new int[downsampledWidth * downsampledHeight];
+            int[] delayTime = new int[1];
+            int tpgStatus = pTPG.decodeOneFrame(rawBytes, framePointer, outData, bm,
+                    delayTime);
+
+            if (tpgStatus != TPG_STATUS_OK) {
+                this.status = STATUS_PARTIAL_DECODE;
+            }
         }
         return bm;
     }
@@ -213,9 +223,35 @@ public class TpgGifDecoder implements GifDecoder {
         return status;
     }
 
+    private boolean isDecoderOpened;
+    private static final AtomicInteger decoderCount = new AtomicInteger(0);
+    public void openDecoder() {
+        if (pTPG != null && !isDecoderOpened) {
+            synchronized(lock) {
+                if (!isDecoderOpened) {
+                    pTPG.startDecode(rawBytes);
+                    isDecoderOpened = true;
+                }
+            }
+            Log.d(TAG, "Open Decoder, increased to " + decoderCount.incrementAndGet());
+        }
+    }
+
+    public void closeDecoder() {
+        if (pTPG != null && isDecoderOpened) {
+            synchronized(lock) {
+                if (isDecoderOpened) {
+                    pTPG.closeDecode();
+                    isDecoderOpened = false;
+                }
+            }
+            Log.d(TAG, "Close Decoder, decreased to " + decoderCount.decrementAndGet());
+        }
+    }
+
     @Override
     public void clear() {
-        pTPG.closeDecode();
+        closeDecoder();
         pTPG = null;
     }
 
@@ -250,7 +286,7 @@ public class TpgGifDecoder implements GifDecoder {
         if (tpgStatus != TPG_STATUS_OK) {
             this.status = STATUS_FORMAT_ERROR;
         }
-        pTPG.startDecode(rawBytes);
+        openDecoder();
 
         this.sampleSize = sampleSize;
         downsampledWidth = getWidth() / sampleSize;

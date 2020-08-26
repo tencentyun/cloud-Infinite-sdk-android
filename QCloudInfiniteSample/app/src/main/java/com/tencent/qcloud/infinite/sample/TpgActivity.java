@@ -25,12 +25,12 @@ package com.tencent.qcloud.infinite.sample;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -45,6 +45,7 @@ import com.tencent.qcloud.infinite.CloudInfinite;
 import com.tencent.qcloud.infinite.CloudInfiniteCallback;
 import com.tencent.qcloud.infinite.enumm.CIImageFormat;
 import com.tencent.qcloud.infinite.enumm.CIImageLoadOptions;
+import com.tencent.qcloud.infinite.sample.base.BaseActivity;
 import com.tencent.qcloud.infinite.sample.base.BaseImageInfoView;
 import com.tencent.qcloud.infinite.sample.base.BaseImageListView;
 import com.tencent.qcloud.infinite.sample.base.ImageBean;
@@ -57,10 +58,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class TpgActivity extends AppCompatActivity implements BaseImageListView.OnClickListener {
+public class TpgActivity extends BaseActivity implements BaseImageListView.OnClickListener {
     private BaseImageInfoView view_imageinfo;
     private ImageView iv_tpg;
     private TextView tv_size_tpg;
+    private TextView tv_format_tpg;
     private TextView tv_consume_tpg;
 
     @Override
@@ -74,6 +76,7 @@ public class TpgActivity extends AppCompatActivity implements BaseImageListView.
         view_imageinfo = findViewById(R.id.view_imageinfo);
         iv_tpg = findViewById(R.id.iv_tpg);
         tv_size_tpg = findViewById(R.id.tv_size_tpg);
+        tv_format_tpg = findViewById(R.id.tv_format_tpg);
         tv_consume_tpg = findViewById(R.id.tv_consume_tpg);
     }
 
@@ -82,6 +85,7 @@ public class TpgActivity extends AppCompatActivity implements BaseImageListView.
     public void onClick(final ImageBean image) {
         iv_tpg.setImageBitmap(null);
         tv_size_tpg.setText("");
+        tv_format_tpg.setText("");
         tv_consume_tpg.setText("");
 
         view_imageinfo.setData(image.url, image.format);
@@ -105,11 +109,15 @@ public class TpgActivity extends AppCompatActivity implements BaseImageListView.
                             .skipMemoryCache(true) //不使用内存缓存
                             .diskCacheStrategy(DiskCacheStrategy.NONE) //不使用磁盘缓存
                             .addListener(new RequestListener<GifDrawable>() {
+                                @SuppressLint("DefaultLocale")
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+                                    long consume = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+                                    tv_consume_tpg.setText(String.format("耗时：%.2fs", consume / 1000f));
                                     return false;
                                 }
 
+                                @SuppressLint("DefaultLocale")
                                 @Override
                                 public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
                                     long consume = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
@@ -124,11 +132,15 @@ public class TpgActivity extends AppCompatActivity implements BaseImageListView.
                             .skipMemoryCache(true) //不使用内存缓存
                             .diskCacheStrategy(DiskCacheStrategy.NONE) //不使用磁盘缓存
                             .addListener(new RequestListener<Drawable>() {
+                                @SuppressLint("DefaultLocale")
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    long consume = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+                                    tv_consume_tpg.setText(String.format("耗时：%.2fs", consume / 1000f));
                                     return false;
                                 }
 
+                                @SuppressLint("DefaultLocale")
                                 @Override
                                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                     long consume = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
@@ -139,40 +151,43 @@ public class TpgActivity extends AppCompatActivity implements BaseImageListView.
                             .into(iv_tpg);
                 }
 
-                //获取并展示图片大小（仅做演示）
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //获取TPG文件大小
-                        final int tpgSize = getFileSzie(request.getUrl(), request.getHeaders());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                tv_size_tpg.setText(String.format("大小：%s", Utils.readableStorageSize(tpgSize)));
-                            }
-                        });
-                    }
-                }).start();
-
+                getFileSizeType(request.getUrl(), request.getHeaders());
             }
         });
     }
 
     /**
-     * 获取远程文件大小
+     * 获取并设置远程文件大小和type（仅做演示）
      */
-    private int getFileSzie(URL url, Map<String, List<String>> header) {
-        int originalSize = 0;
-        try {
-            URLConnection connection = url.openConnection();
-            if (header != null && header.size() > 0) {
-                for (String key : header.keySet())
-                    connection.addRequestProperty(key, header.get(key).get(0));
+    private void getFileSizeType(final URL url, final Map<String, List<String>> header) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URLConnection connection = url.openConnection();
+                    if (header != null && header.size() > 0) {
+                        for (String key : header.keySet())
+                            connection.addRequestProperty(key, header.get(key).get(0));
+                    }
+                    final int size = connection.getContentLength();
+                    String contentType = connection.getContentType();
+                    if (!TextUtils.isEmpty(contentType) && contentType.startsWith("image/")) {
+                        contentType = contentType.replace("image/", "").toUpperCase();
+                    }
+
+                    final String finalContentType = contentType;
+                    runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
+                            tv_format_tpg.setText("格式：" + finalContentType);
+                            tv_size_tpg.setText(String.format("大小：%s", Utils.readableStorageSize(size)));
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            originalSize = connection.getContentLength();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return originalSize;
+        }).start();
     }
 }

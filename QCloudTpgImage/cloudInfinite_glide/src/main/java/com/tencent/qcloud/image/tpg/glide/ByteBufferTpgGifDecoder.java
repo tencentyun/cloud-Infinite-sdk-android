@@ -28,12 +28,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.gifdecoder.GifDecoder;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.ResourceDecoder;
 import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.UnitTransformation;
+import com.bumptech.glide.load.resource.gif.GifBitmapProvider;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.load.resource.gif.GifDrawableResource;
 import com.tencent.qcloud.infinite.glide.CloudInfiniteGlide;
@@ -52,10 +53,21 @@ public class ByteBufferTpgGifDecoder implements ResourceDecoder<ByteBuffer, GifD
 
     private final Context context;
     private final BitmapPool bitmapPool;
+    private final ArrayPool arrayPool;
+    private final GifBitmapProvider provider;
 
     public ByteBufferTpgGifDecoder(Context context, BitmapPool bitmapPool) {
         this.context = context;
         this.bitmapPool = bitmapPool;
+        this.arrayPool = null;
+        this.provider = null;
+    }
+
+    public ByteBufferTpgGifDecoder(Context context, BitmapPool bitmapPool, ArrayPool arrayPool) {
+        this.context = context;
+        this.bitmapPool = bitmapPool;
+        this.arrayPool = arrayPool;
+        this.provider = new GifBitmapProvider(bitmapPool, arrayPool);
     }
 
     @Override
@@ -100,7 +112,7 @@ public class ByteBufferTpgGifDecoder implements ResourceDecoder<ByteBuffer, GifD
 
         int sampleSize = getSampleSize(width, height, pTPG.getWidth(), pTPG.getHeight());
 
-        GifDecoder gifDecoder = new TpgGifDecoder(source, sampleSize);
+        TpgGifDecoder gifDecoder = new TpgGifDecoder(source, sampleSize, provider);
         gifDecoder.advance();
         Bitmap firstFrame = gifDecoder.getNextFrame();
         if (firstFrame == null) {
@@ -109,8 +121,8 @@ public class ByteBufferTpgGifDecoder implements ResourceDecoder<ByteBuffer, GifD
 
         Transformation<Bitmap> unitTransformation = UnitTransformation.get();
 
-        GifDrawable gifDrawable =
-                new GifDrawable(context, gifDecoder, bitmapPool, unitTransformation, width, height, firstFrame);
+        com.tencent.qcloud.image.tpg.glide.TpgGifDrawable gifDrawable =
+                new com.tencent.qcloud.image.tpg.glide.TpgGifDrawable(context, gifDecoder,this.bitmapPool, unitTransformation, width, height, firstFrame);
 
         return new GifDrawableResource(gifDrawable);
     }

@@ -27,17 +27,17 @@ import android.view.View;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.tencent.qcloud.infinite.CIImageLoadRequest;
 import com.tencent.qcloud.infinite.CITransformation;
 import com.tencent.qcloud.infinite.CloudInfinite;
 import com.tencent.qcloud.infinite.CloudInfiniteCallback;
+import com.tencent.qcloud.infinite.sample.base.BaseActivity;
 import com.tencent.qcloud.infinite.sample.base.BaseImageInfoView;
 import com.tencent.qcloud.infinite.sample.base.BaseImageListView;
 import com.tencent.qcloud.infinite.sample.base.ImageBean;
 
-public class StripActivity extends AppCompatActivity implements BaseImageListView.OnClickListener {
+public class StripActivity extends BaseActivity implements BaseImageListView.OnClickListener {
     private BaseImageInfoView view_imageinfo;
     private Switch switch_strip;
 

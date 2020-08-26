@@ -32,10 +32,12 @@ import com.tencent.qcloud.infinite.transform.FormatTransform;
 import com.tencent.qcloud.infinite.transform.ThumbnailTransform;
 
 /**
- * 根据ImageView自适应缩放图片
+ * 根据ImageView和系统版本自适应图片
  */
 public class ResponsiveTransformation extends CITransformation {
     private static final String TAG = "ResponsiveTransformation";
+
+    private CIImageFormat imageFormat = null;
 
     public ResponsiveTransformation(@NonNull ImageView imageView) {
         switch (imageView.getScaleType()) {
@@ -56,9 +58,19 @@ public class ResponsiveTransformation extends CITransformation {
         if (currentapiVersion >= 18 && currentapiVersion < 29) {
             //Android 4.3到10转webp
             transforms.add(new FormatTransform(CIImageFormat.WEBP, CIImageLoadOptions.LoadTypeUrlFooter));
+            this.imageFormat = CIImageFormat.WEBP;
         } else if(currentapiVersion >= 29) {
             //Android10以及以上转heif
             transforms.add(new FormatTransform(CIImageFormat.HEIF, CIImageLoadOptions.LoadTypeUrlFooter));
+            this.imageFormat = CIImageFormat.HEIF;
         }
+    }
+
+    /**
+     * 获取自适应后图片格式
+     * @return 图片格式（null值代表为原格式，没有进行格式转换）
+     */
+    public CIImageFormat getImageFormat() {
+        return imageFormat;
     }
 }

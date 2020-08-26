@@ -32,6 +32,7 @@
         <activity android:name=".SharpenActivity" android:label="锐化"/>
         <activity android:name=".StripActivity" android:label="去除元信息"/>
         <activity android:name=".ImageAveActivity" android:label="图片主色" />
+        <activity android:name=".GifActivity" android:label="TPG GIF"/>
     </application>
 
 </manifest>

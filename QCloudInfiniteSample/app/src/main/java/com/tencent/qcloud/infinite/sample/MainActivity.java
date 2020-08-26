@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_watermark).setOnClickListener(this);
         findViewById(R.id.btn_ave).setOnClickListener(this);
         findViewById(R.id.btn_strip).setOnClickListener(this);
+        findViewById(R.id.btn_gif).setOnClickListener(this);
     }
 
 
@@ -91,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_strip:
                 startActivity(new Intent(this, StripActivity.class));
+                break;
+            case R.id.btn_gif:
+                startActivity(new Intent(this, GifActivity.class));
                 break;
         }
     }
