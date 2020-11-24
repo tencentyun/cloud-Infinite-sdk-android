@@ -316,7 +316,7 @@ LoadTypeUrlFooter,
 
 在使用图片格式转换时，如果需要转为 TPG 格式，则需要依赖 tpg SDK，如下所示。
 ```
-    implementation 'com.tencent.qcloud:tpg:1.2.0'	
+    implementation 'com.tencent.qcloud:tpg:1.3.1'	
 ```
 
 使用 TPG 时，安装时会自动包含 SO 库，建议在 Module 的 build.gradle 文件中使用 NDK 的“abiFilter”配置，设置支持的 SO 库架构。
@@ -493,7 +493,7 @@ transform
 ### 安装 TPG SDK
 
 ```
-implementation 'com.tencent.qcloud:tpg:1.2.0'    
+implementation 'com.tencent.qcloud:tpg:1.3.1'    
 ```
 
 安装时会自动包含 SO 库，建议在 Module 的 build.gradle 文件中使用 NDK 的“abiFilter”配置，设置支持的 SO 库架构。
@@ -569,7 +569,7 @@ Glide.with(activity).load(request.getUrl().toString()).into(imageview);
 
 安装 TPG SDK 和 cloud-infinite-glide SDK 以及 glide:compiler。
 ```
-implementation 'com.tencent.qcloud:tpg:1.2.0'	
+implementation 'com.tencent.qcloud:tpg:1.3.1'	
 implementation 'com.tencent.qcloud:cloud-infinite-glide:1.2.0'	
 annotationProcessor 'com.github.bumptech.glide:compiler:version' 
 ```
@@ -639,6 +639,10 @@ registry.prepend(CIImageLoadRequest.class, InputStream.class, new CIImageRequest
 <div id="更新日志"></div>
 
 ## 更新日志
+
+#### tpg Version 1.3.1
+##### 2020-11-24
+兼容Android targetSdkVersion 29及以上
 
 #### tpg Version 1.3.0
 ##### 2020-08-24

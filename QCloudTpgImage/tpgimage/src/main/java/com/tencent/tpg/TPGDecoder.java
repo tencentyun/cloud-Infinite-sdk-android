@@ -117,15 +117,6 @@ public class TPGDecoder {
 		return GetDelayTime2(mhDec, index);
 	}
 
-	public int decodeOneFrame(byte[] stream, int index, Bitmap bm) {
-		int res = 0;
-		if ((res = DecodeImageToBitmap(mhDec, stream, index, bm, 0)) > 0) {
-			System.out.println("decode error: ");
-		}
-
-		return res;
-	}
-
 	public int decodeOneFrame(byte[] stream, int index, int[] outData,
 			Bitmap bm, int[] delayTime) {
 
@@ -366,7 +357,7 @@ public class TPGDecoder {
 			TPGOutFrame tpgOutFrame);
 
 	private native int DecodeImageToBitmap(long hObj, byte[] pStream, int index,
-			Bitmap bitmap, Integer delayTime);
+			Bitmap bitmap, int delayTime);
 
 	private native void CloseDecoder(long hObj);
 
@@ -382,7 +373,7 @@ public class TPGDecoder {
 	private native int DecodeImage2(long hObj, int index, TPGOutFrame tpgOutFrame);
 
 	private native int DecodeImageToBitmap2(long hObj, int index, Bitmap bitmap,
-			Integer delayTime);
+			int delayTime);
 
 	private native void CloseDecoder2(long hObj);
 
