@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.qcloud.infinite.sample">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:name=".MyApplication"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CiActivity" android:label="基础图片操作" />
+        <activity android:name=".AvifDecoderActivity" android:label="AVIF解码器" />
+        <activity android:name=".TpgDecoderActivity" android:label="TPG解码器" />
+        <activity android:name=".TestActivity" android:label="Test" />
+
+        <activity android:name=".ci.ResponsiveActivity" android:label="自适应图片加载" />
+        <activity android:name=".ci.ThumbnailActivity" android:label="缩放"/>
+        <activity android:name=".ci.CropActivity" android:label="剪裁"/>
+        <activity android:name=".ci.RotateActivity" android:label="旋转"/>
+        <activity android:name=".ci.FormatActivity" android:label="格式转换"/>
+        <activity android:name=".ci.GifOptActivity" android:label="GIF优化"/>
+        <activity android:name=".ci.QualityActivity" android:label="质量调节"/>
+        <activity android:name=".ci.WatermarkActivity" android:label="水印"/>
+        <activity android:name=".ci.BlurActivity" android:label="高斯模糊"/>
+        <activity android:name=".ci.SharpenActivity" android:label="锐化"/>
+        <activity android:name=".ci.StripActivity" android:label="去除元信息"/>
+        <activity android:name=".ci.ImageAveActivity" android:label="图片主色" />
+
+        <activity android:name=".avif.AVIFGlideActivity" android:label="Glide加载AVIF图片" />
+        <activity android:name=".avif.AvifGlideMemoryActivity" android:label="GlideAvifMemory"/>
+        <activity android:name=".avif.AVIFFrescoActivity" android:label="Fresco加载AVIF图片" />
+        <activity android:name=".avif.AvifFrescoMemoryActivity" android:label="FrescoAvifMemory"/>
+        <activity android:name=".avif.AvifGifActivity" android:label="AVIF GIF"/>
+        <activity android:name=".avif.AvifDecodeActivity" android:label="AVIF解码测试"/>
+        <activity android:name=".avif.SuperLargeImageAvifActivity" android:label="AVIF超大图"/>
+
+        <activity android:name=".tpg.TpgGlideActivity" android:label="Glide加载TPG图片" />
+        <activity android:name=".tpg.TpgGlideMemoryActivity" android:label="GlideTpgMemory"/>
+        <activity android:name=".tpg.TpgGlideVsWebPActivity" android:label="Glide WebP对比"/>
+        <activity android:name=".tpg.TpgGlideImageListActivity" android:label="普通图片和TPG混合列表"/>
+        <activity android:name=".tpg.TpgFrescoActivity" android:label="Fresco加载TPG图片" />
+        <activity android:name=".tpg.TpgFrescoMemoryActivity" android:label="FrescoTpgMemory"/>
+        <activity android:name=".tpg.TpgFrescoImageListActivity" android:label="普通图片和TPG混合列表"/>
+        <activity android:name=".tpg.TpgGifActivity" android:label="TPG GIF"/>
+        <activity android:name=".tpg.TpgDecodeActivity" android:label="TPG解码测试"/>
+        <activity android:name=".tpg.SuperLargeImageTpgActivity" android:label="TPG超大图"/>
+        <activity android:name=".tpg.TpgGlideOriginalImageRetryActivity" android:label="TPG Glide原图兜底"/>
+        <activity android:name=".tpg.TpgFrescoOriginalImageRetryActivity" android:label="TPG Fresco原图兜底"/>
+        <activity android:name=".tpg.TpgGlideSmallImageListActivity" android:label="TPG 小图网络并发测试"/>
+    </application>
+
+</manifest>

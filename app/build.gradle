@@ -1,0 +1,146 @@
+/*
+ * Copyright (c) 2010-2020 Tencent Cloud. All rights reserved.
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
+ */
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        applicationId "com.tencent.qcloud.ci.imageloader.sample"
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+//        ndk {
+//            //'armeabi', 'armeabi-v7a', 'arm64-v8a'
+//            abiFilters 'armeabi-v7a'
+//        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("$System.env.KEYSTORE_PATH")
+            storePassword "$System.env.STOREPASS"
+            keyAlias "$System.env.ALIAS"
+            keyPassword "$System.env.KEYPASS"
+        }
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled = true
+            it.buildConfigField 'String', 'UT_DNS_ID', quotWrapper(System.getenv("UT_DNS_ID"))
+            it.buildConfigField 'String', 'UT_DNS_KEY', quotWrapper(System.getenv("UT_DNS_KEY"))
+
+            it.buildConfigField 'String', 'CLS_SECRET_ID', quotWrapper(System.getenv("CLS_SECRET_ID"))
+            it.buildConfigField 'String', 'CLS_SECRET_KEY', quotWrapper(System.getenv("CLS_SECRET_KEY"))
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
+
+    api 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+    api ("com.github.bumptech.glide:recyclerview-integration:4.13.2") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
+
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'com.squareup.okio:okio:3.2.0'
+
+    implementation 'com.facebook.fresco:fresco:2.2.0'
+    // 如果需要支持avif或tpg的动图解码器 则需要加上fresco:animated-base
+    implementation 'com.facebook.fresco:animated-base:2.2.0'
+    // For animated GIF support
+    implementation 'com.facebook.fresco:animated-gif:2.2.0'
+    // For WebP support, including animated WebP
+    implementation 'com.facebook.fresco:animated-webp:2.2.0'
+    implementation 'com.facebook.fresco:webpsupport:2.2.0'
+    implementation "com.facebook.fresco:imagepipeline-okhttp3:2.2.0"
+
+    /* Android系统默认不支持webp动图，因此需要开发者自己处理webp动图的加载 */
+    /* 本示例采用com.zlc.glide:webpdecoder:2.0.4.11.0进行webp动图加载 */
+    implementation "com.zlc.glide:webpdecoder:2.0.4.11.0"
+
+    implementation 'com.caverock:androidsvg:1.2.1'
+
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
+
+    //tencent http dns
+    implementation "io.github.dnspod:httpdns-sdk:4.3.0"
+    implementation 'android.arch.persistence.room:rxjava2:2.1.1'
+
+    // avif和tpg同时依赖时 需要有一个排除灯塔 否则灯塔类会冲突
+//    implementation 'com.qcloud.cos:avif:1.1.2'
+//    implementation 'com.qcloud.cos:tpg-nobeacon:1.4.0'
+//    implementation 'com.qcloud.cos:cloud-infinite:1.2.1'
+//    implementation 'com.qcloud.cos:cloud-infinite-loader:1.2.1'
+//    implementation 'com.qcloud.cos:cloud-infinite-glide:1.2.1'
+
+    // avif和tpg同时依赖时 需要有一个排除灯塔 否则灯塔类会冲突
+    implementation project(':avifimage')
+    implementation project(':tpgimage')
+    implementation project(':decoder-network')
+    implementation project(':quic')
+    implementation project(':qcloud-track')
+
+    implementation project(':cloudInfinite')
+    implementation project(':cloudInfiniteLoader')
+    implementation project(':cloudInfinite_glide')
+
+}
+
+static String quotWrapper(key) {
+    if (key == null) {
+        return "\"\""
+    }
+    return "\"".concat(key).concat("\"")
+}

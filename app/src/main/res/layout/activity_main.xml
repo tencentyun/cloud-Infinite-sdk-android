@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010-2020 Tencent Cloud. All rights reserved.
+  ~
+  ~  Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~  of this software and associated documentation files (the "Software"), to deal
+  ~  in the Software without restriction, including without limitation the rights
+  ~  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~  copies of the Software, and to permit persons to whom the Software is
+  ~  furnished to do so, subject to the following conditions:
+  ~
+  ~  The above copyright notice and this permission notice shall be included in all
+  ~  copies or substantial portions of the Software.
+  ~
+  ~  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~  SOFTWARE.
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <Button
+            android:id="@+id/btn_avif_decoder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="AVIF解码器"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="AVIF 图片解码器以及 Glide、Fresco 超大图 生态封装"/>
+
+        <Button
+            android:id="@+id/btn_tpg_decoder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="TPG解码器"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="TPG 图片解码器以及 Glide、Fresco 超大图 生态封装"/>
+
+        <Button
+            android:id="@+id/btn_ci"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="基础图片操作"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="数据万象的基础图片处理操作，并支持各个操作能够相互组合，构建 URL 进行网络请求"/>
+
+        <Button
+            android:id="@+id/btn_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="30dp"
+            android:drawableRight="@drawable/arrow"
+            android:text="Test"/>
+    </LinearLayout>
+</ScrollView>

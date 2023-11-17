@@ -1,0 +1,53 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        applicationId "com.tencent.qcloud.ci.sample.app"
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.6.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // avif和tpg同时依赖时 需要有一个排除灯塔 否则灯塔类会冲突
+    implementation project(':avifimage')
+//    implementation project(':tpgimage')
+    implementation project(':decoder-network')
+    implementation project(':quic')
+
+    api 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+
+
+//    implementation 'com.facebook.fresco:fresco:2.2.0'
+//    // 如果需要支持avif或tpg的动图解码器 则需要加上fresco:animated-base
+//    implementation 'com.facebook.fresco:animated-base:2.2.0'
+//    // For animated GIF support
+//    implementation 'com.facebook.fresco:animated-gif:2.2.0'
+}
