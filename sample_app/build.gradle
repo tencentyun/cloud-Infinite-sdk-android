@@ -4,6 +4,7 @@ plugins {
 
 android {
     compileSdkVersion 33
+    ndkVersion = '21.4.7075529'
 
     defaultConfig {
         applicationId "com.tencent.qcloud.ci.sample.app"
@@ -36,10 +37,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // avif和tpg同时依赖时 需要有一个排除灯塔 否则灯塔类会冲突
-    implementation project(':avifimage')
-//    implementation project(':tpgimage')
-    implementation project(':decoder-network')
-    implementation project(':quic')
+    implementation 'com.qcloud.cos:avif:1.1.6'
+    implementation 'com.qcloud.cos:tpg-nobeacon:1.4.0'
+    implementation 'com.qcloud.cos:qcloud-decoder-network:1.1.0'
+
+//    implementation project(':avifimage')
+////    implementation project(':tpgimage')
+//    implementation project(':decoder-network')
+//    implementation project(':quic')
 
     api 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'

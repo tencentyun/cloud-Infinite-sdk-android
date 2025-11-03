@@ -91,9 +91,9 @@ public class MyAppGlideModule extends AppGlideModule {
     private static final String TAG = "MyAppGlideModule";
 
     // 图片缓存最大容量，30M，根据自己的需求进行修改
-    public static final int GLIDE_CATCH_SIZE = 250 * 1024 * 1024;
+    public static final int GLIDE_CACHE_SIZE = 250 * 1024 * 1024;
     // 图片缓存子目录
-    public static final String GLIDE_CARCH_DIR = "image_catch";
+    public static final String GLIDE_CACHE_DIR = "image_cache";
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, Registry registry) {
@@ -196,7 +196,7 @@ public class MyAppGlideModule extends AppGlideModule {
         ImageViewTarget.setTagId(R.id.glide_custom_view_target_tag);
 
         builder.setDefaultRequestOptions(new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888));
-        builder.setDiskCache(new InternalCacheDiskCacheFactory(context, GLIDE_CARCH_DIR, GLIDE_CATCH_SIZE));
+        builder.setDiskCache(new InternalCacheDiskCacheFactory(context, GLIDE_CACHE_DIR, GLIDE_CACHE_SIZE));
         builder.setMemoryCache(new LruResourceCache(calculator.getMemoryCacheSize()));
         builder.setBitmapPool(new LruBitmapPool(calculator.getBitmapPoolSize()));
 

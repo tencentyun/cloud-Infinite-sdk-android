@@ -24,6 +24,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 33
+    ndkVersion = '21.4.7075529'
 
     defaultConfig {
         applicationId "com.tencent.qcloud.ci.imageloader.sample"
@@ -109,7 +110,7 @@ dependencies {
     /* 本示例采用com.zlc.glide:webpdecoder:2.0.4.11.0进行webp动图加载 */
     implementation "com.zlc.glide:webpdecoder:2.0.4.11.0"
 
-    implementation 'com.caverock:androidsvg-aar:1.4'
+    implementation 'com.caverock:androidsvg:1.2.1'
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
@@ -119,22 +120,25 @@ dependencies {
     implementation 'android.arch.persistence.room:rxjava2:2.1.1'
 
     // avif和tpg同时依赖时 需要有一个排除灯塔 否则灯塔类会冲突
-//    implementation 'com.qcloud.cos:avif:1.1.2'
-//    implementation 'com.qcloud.cos:tpg-nobeacon:1.4.0'
-//    implementation 'com.qcloud.cos:cloud-infinite:1.2.1'
-//    implementation 'com.qcloud.cos:cloud-infinite-loader:1.2.1'
-//    implementation 'com.qcloud.cos:cloud-infinite-glide:1.2.1'
+    implementation 'com.qcloud.cos:avif:1.1.6'
+    implementation 'com.qcloud.cos:tpg-nobeacon:1.4.0'
+    implementation 'com.qcloud.cos:cloud-infinite:1.2.1'
+    implementation 'com.qcloud.cos:cloud-infinite-loader:1.2.1'
+    implementation 'com.qcloud.cos:cloud-infinite-glide:1.2.1'
+    implementation 'com.qcloud.cos:qcloud-decoder-network:1.1.0'
 
     // avif和tpg同时依赖时 需要有一个排除灯塔 否则灯塔类会冲突
-    implementation project(':avifimage')
-    implementation project(':tpgimage')
-    implementation project(':decoder-network')
-    implementation project(':quic')
-    implementation project(':qcloud-track')
+//    implementation project(':avifimage')
+//    implementation project(':tpgimage')
+//    implementation project(':decoder-network')
+//    implementation project(':quic')
+//    implementation project(':qcloud-track')
 
-    implementation project(':cloudInfinite')
-    implementation project(':cloudInfiniteLoader')
-    implementation project(':cloudInfinite_glide')
+//    implementation project(':cloudInfinite')
+//    implementation project(':cloudInfiniteLoader')
+//    implementation project(':cloudInfinite_glide')
+
+    implementation 'com.codesgood:justifiedtextview:1.1.0'
 
 }
 

@@ -24,7 +24,6 @@ import com.tencent.qcloud.image.tpg.fresco.FrescoTpgAnimatedDecoder;
 import com.tencent.qcloud.image.tpg.fresco.FrescoTpgDecoder;
 import com.tencent.qcloud.image.tpg.fresco.TpgAnimatedFormatChecker;
 import com.tencent.qcloud.image.tpg.fresco.TpgFormatChecker;
-import com.tencent.qcloud.track.QCloudTrackService;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -45,19 +44,19 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         frescoInit(this);
-        tencentHttpDnsInit();
+//        tencentHttpDnsInit();
         trackInit();
     }
 
     private void trackInit(){
-        QCloudTrackService.init(this,
-                "ci_image_sdk",
-                "ap-guangzhou.cls.tencentcs.com",
-                BuildConfig.CLS_SECRET_ID,
-                BuildConfig.CLS_SECRET_KEY,
-                "",
-                BuildConfig.DEBUG, false
-        );
+//        QCloudTrackService.init(this,
+//                "ci_image_sdk",
+//                "ap-guangzhou.cls.tencentcs.com",
+//                BuildConfig.CLS_SECRET_ID,
+//                BuildConfig.CLS_SECRET_KEY,
+//                "",
+//                BuildConfig.DEBUG, false
+//        );
     }
 
     private void frescoInit(Context context) {
