@@ -110,7 +110,7 @@ dependencies {
     /* 本示例采用com.zlc.glide:webpdecoder:2.0.4.11.0进行webp动图加载 */
     implementation "com.zlc.glide:webpdecoder:2.0.4.11.0"
 
-    implementation 'com.caverock:androidsvg:1.2.1'
+    implementation 'com.caverock:androidsvg:1.4'
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
